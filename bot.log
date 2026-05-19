@@ -1,6 +1,0 @@
-[2026-05-19 13:39:26] [INFO] [client] Binance Futures Testnet client initialized successfully.
-[2026-05-19 13:39:26] [ERROR] [client] Connection/API error while fetching account balance: APIError(code=-2014): API-key format invalid.
-[2026-05-19 14:14:41] [INFO] [client] Binance Futures Testnet client initialized successfully.
-[2026-05-19 14:14:42] [ERROR] [client] Connection/API error while fetching account balance: APIError(code=-2014): API-key format invalid.
-[2026-05-19 14:50:49] [INFO] [client] Binance Futures Testnet client initialized successfully.
-[2026-05-19 14:50:49] [DEBUG] [client] Successfully fetched USDT futures balance: 5000.0
