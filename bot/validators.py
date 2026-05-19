@@ -11,7 +11,7 @@ def validate_order_input(symbol, side, order_type, quantity, price=None):
     
     # --- Validate Symbol ---
     if not isinstance(symbol, str) or not symbol.strip():
-        raise ValueError("Symbol must be a non-empty string.")
+        raise ValueError("Symbol cannot be empty. Example: BTCUSDT")
     
     cleaned_symbol = symbol.strip()
     if not cleaned_symbol.isupper():
@@ -23,7 +23,7 @@ def validate_order_input(symbol, side, order_type, quantity, price=None):
         
     cleaned_side = side.strip().upper()
     if cleaned_side not in ("BUY", "SELL"):
-        raise ValueError(f"Side must be 'BUY' or 'SELL', got: '{side}'")
+        raise ValueError(f"Invalid side '{side}'. Must be BUY or SELL.")
 
     # --- Validate Order Type ---
     if not isinstance(order_type, str):
@@ -31,30 +31,30 @@ def validate_order_input(symbol, side, order_type, quantity, price=None):
         
     cleaned_order_type = order_type.strip().upper()
     if cleaned_order_type not in ("MARKET", "LIMIT"):
-        raise ValueError(f"Order type must be 'MARKET' or 'LIMIT', got: '{order_type}'")
+        raise ValueError(f"Invalid order type '{order_type}'. Must be MARKET or LIMIT.")
 
     # --- Validate Quantity ---
     try:
         cleaned_quantity = float(quantity)
     except (TypeError, ValueError):
-        raise ValueError(f"Quantity must be a valid number, got: '{quantity}'")
+        raise ValueError(f"Quantity must be a positive number. Got: '{quantity}'")
         
     if cleaned_quantity <= 0:
-        raise ValueError(f"Quantity must be a positive float, got: {cleaned_quantity}")
+        raise ValueError(f"Quantity must be a positive number. Got: '{quantity}'")
 
     # --- Validate Price ---
     cleaned_price = None
     if cleaned_order_type == "LIMIT":
         if price is None:
-            raise ValueError("Price is required when order_type is LIMIT.")
+            raise ValueError("Price is required for LIMIT orders.")
             
         try:
             cleaned_price = float(price)
         except (TypeError, ValueError):
-            raise ValueError(f"Price must be a valid number, got: '{price}'")
+            raise ValueError(f"Price must be a positive number. Got: '{price}'")
             
         if cleaned_price <= 0:
-            raise ValueError(f"Price must be a positive float, got: {cleaned_price}")
+            raise ValueError(f"Price must be a positive number. Got: '{price}'")
             
     # If order_type is MARKET, price is ignored (remains None)
             

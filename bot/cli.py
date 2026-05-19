@@ -13,9 +13,8 @@ def main():
 
     args = parser.parse_args()
 
+    # Step 1: Validation
     try:
-        # Validate inputs
-        # validate_order_input raises ValueError if anything is invalid
         cleaned_inputs = validate_order_input(
             symbol=args.symbol,
             side=args.side,
@@ -23,30 +22,41 @@ def main():
             quantity=args.qty,
             price=args.price
         )
+    except ValueError as ve:
+        print(f"[ERROR] Invalid input: {ve}")
+        sys.exit(1)
         
-        # Extract validated/cleaned data
-        symbol = cleaned_inputs["symbol"]
-        side = cleaned_inputs["side"]
-        order_type = cleaned_inputs["order_type"]
-        quantity = cleaned_inputs["quantity"]
-        price = cleaned_inputs["price"]
+    symbol = cleaned_inputs["symbol"]
+    side = cleaned_inputs["side"]
+    order_type = cleaned_inputs["order_type"]
+    quantity = cleaned_inputs["quantity"]
+    price = cleaned_inputs["price"]
 
-        # Initialize the order manager
+    price_str = price if price is not None else "N/A"
+
+    # Step 2: Print order summary block
+    print("==============================")
+    print("  Trading Bot - Order Request ")
+    print("==============================")
+    print(f"  Symbol   : {symbol}")
+    print(f"  Side     : {side}")
+    print(f"  Type     : {order_type}")
+    print(f"  Quantity : {quantity}")
+    print(f"  Price    : {price_str}")
+    print("==============================")
+
+    # Step 3: Order placement
+    try:
         manager = OrderManager()
 
-        # Route the order to the correct method based on order_type
         if order_type == "MARKET":
             manager.place_market_order(symbol=symbol, side=side, quantity=quantity)
         elif order_type == "LIMIT":
             manager.place_limit_order(symbol=symbol, side=side, quantity=quantity, price=price)
             
-    except ValueError as ve:
-        # Validation error from validate_order_input()
-        print(f"Validation Error: {ve}")
-        sys.exit(1)
+        print("[SUCCESS] Order placed successfully!")
     except Exception as e:
-        # Catch any other unexpected exceptions (e.g., connection errors from place_order)
-        print(f"An unexpected error occurred: {e}")
+        print(f"[ERROR] Order failed: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":
